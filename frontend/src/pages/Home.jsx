@@ -47,9 +47,23 @@ function Home() {
         textAlign: 'center',
     };
 
-    const handleLogout = () => {
-        window.location.href = 'http://localhost:5173/';
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('http://localhost:4000/logout', {
+                method: 'GET',
+                credentials: 'include', // Important for sending cookies
+            });
+    
+            if (response.ok) {
+                navigate('/'); // Redirect to home or login page
+            } else {
+                console.error('Logout failed');
+            }
+        } catch (err) {
+            console.error('Logout error:', err);
+        }
     };
+    
 
     return (
         <div style={containerStyle}>

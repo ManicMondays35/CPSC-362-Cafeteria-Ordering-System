@@ -74,3 +74,16 @@
 20250508	03:02:16	168aee99-e513-4f9e-b5e7-5e3efeee8d11	POST	http://localhost:5174	/auth
 20250508	03:02:29	9c38ddb8-d495-47a5-9dd8-3018642b2907	OPTIONS	http://localhost:5174	/menu
 20250508	03:02:29	8aad201b-26ec-47d4-83fb-ac9504d1af11	POST	http://localhost:5174	/menu
+20250508	03:15:02	0728d87b-5079-4665-905c-d6459f7056fe	OPTIONS	http://localhost:5174	/auth
+20250508	03:15:02	c231e895-24f1-459d-abcf-785e0004defd	POST	http://localhost:5174	/auth
+20250508	03:15:22	280f9c2e-6d65-4c71-8781-6bb35d8a93dc	OPTIONS	http://localhost:5174	/menu
+20250508	03:15:22	d071a605-8116-47d0-ab55-92caa0d06310	POST	http://localhost:5174	/menu
+20250508	13:24:30	d70e74bf-493a-4ddd-9a96-8e91dab0a8fe	OPTIONS	http://localhost:5174	/auth
+20250508	13:24:30	64e196a3-78d3-429d-882c-f79dfa8fef45	POST	http://localhost:5174	/auth
+20250508	13:29:22	3bd38080-a63d-44e2-9eaf-0818913e3c97	OPTIONS	http://localhost:5174	/auth
+20250508	13:29:22	099c2ef3-40d2-4656-8b29-2ad73d121de8	POST	http://localhost:5174	/auth
+20250508	13:29:24	25e87207-a163-46ce-8b93-b5d07ba72998	POST	http://localhost:5174	/logout
+20250508	13:29:26	6fdbbd1c-955f-4ef7-913d-1b9521ce8006	POST	http://localhost:5174	/logout
+20250508	13:32:38	fc96b53c-d6b2-4bc2-99ac-653298a464ba	OPTIONS	http://localhost:5174	/auth
+20250508	13:32:38	7759a5bb-c891-4335-9de1-37f15c7e8723	POST	http://localhost:5174	/auth
+20250508	13:32:40	51ea00db-a2c7-49b1-8f51-cec852670352	GET	http://localhost:5174	/logout
