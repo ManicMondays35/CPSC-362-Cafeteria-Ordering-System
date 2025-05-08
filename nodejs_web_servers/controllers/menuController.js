@@ -18,5 +18,16 @@ const addMenuItem = async (req, res) => {
     }
 };
 
-// Export the controller
-module.exports = { addMenuItem };
+// get array of arrays of menu items with there properties
+const getMenuItems = async (req, res) => {
+    try {
+        const menuItems = await Menu.find();  // Fetch all menu items from the database
+        res.json(menuItems);  // Return the menu items as a JSON response
+    } catch (err) {
+        console.error('Error fetching menu items:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+// Export both controller functions
+module.exports = { addMenuItem, getMenuItems };

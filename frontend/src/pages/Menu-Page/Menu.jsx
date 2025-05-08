@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCart } from "../Checkout-Page/CartContext";
+import axios from 'axios'; // make sure axios is installed
 
 const PageBackground = styled.div`
   background-image: url("https://images.unsplash.com/photo-1730780883153-b3c046b001c1?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
@@ -62,33 +63,46 @@ const ButtonBox = styled.div`
     margin-top: 20px;
 `;
 
-const foodItems = [
-    { id: 1, name: "Burger", price: 5.99, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=3099&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 2, name: "Pizza", price: 7.49, image: "https://plus.unsplash.com/premium_photo-1664391921404-591084d5d2be?q=80&w=2867&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 3, name: "Salad", price: 4.25, image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 4, name: "Pasta", price: 6.80, image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=2706&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 5, name: "Tacos", price: 5.00, image: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?q=80&w=2942&auto=format&fit=crop&ixib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-];
-
-const drinkItems = [
-    { id: 6, name: "Coke", price: 1.99, image: "https://images.unsplash.com/photo-1605548230624-8d2d0419c517?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fGNva2V8ZW58MHx8MHx8fDA%3D" },
-    { id: 7, name: "Lemonade", price: 2.49, image: "https://images.unsplash.com/photo-1728777187102-1ed5cd6346d5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGxlbW9uZGUlMjBkcmlua3xlbnwwfHwwfHx8MA%3D%3D" },
-    { id: 8, name: "Iced Tea", price: 2.20, image: "https://plus.unsplash.com/premium_photo-1664392087859-815b337c3324?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bGVtb25kZSUyMGRyaW5rfGVufDB8fDB8fHww" },
-    { id: 9, name: "Coffee", price: 3.00, image: "https://images.unsplash.com/photo-1738216796366-314d0687d4bd?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29mZmVlJTIwaWNlZHxlbnwwfHwwfHx8MA%3D%3D" },
-    { id: 10, name: "Smoothie", price: 3.50, image: "https://images.unsplash.com/photo-1575159249868-df58bf5e09ec?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c21vb3RoaWV8ZW58MHx8MHx8fDA%3D" },
-];
-
 const Menu = () => {
     const navigate = useNavigate();
     const { addToCart } = useCart();
 
-    const handleCheckoutClick = () => {
-        navigate('/checkout');
-    };
+    const [foodItems, setFoodItems] = useState([]);
+    const [drinkItems, setDrinkItems] = useState([]);
+    const [loading, setLoading] = useState(true); // Add loading state
 
-    const handleBackClick = () => {
-        navigate('/home');
-    };
+    useEffect(() => {
+        const fetchMenu = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await fetch("http://localhost:4000/menu", {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+    
+                if (!response.ok) throw new Error("Failed to fetch menu");
+    
+                const data = await response.json();
+    
+                setFoodItems(data.filter(item => item.category === "food"));
+                setDrinkItems(data.filter(item => item.category === "drink"));
+            } catch (error) {
+                console.error("Error fetching menu:", error);
+            } finally {
+                setLoading(false); // ✅ MAKE SURE TO SET LOADING TO FALSE
+            }
+        };
+    
+        fetchMenu();
+    }, []);
+    
+
+    const handleCheckoutClick = () => navigate('/checkout');
+    const handleBackClick = () => navigate('/home');
+
+    if (loading) return <PageBackground><p>Loading menu...</p></PageBackground>;
 
     return (
         <PageBackground>
@@ -96,7 +110,7 @@ const Menu = () => {
                 <ItemContainer>
                     <h2>Food Items</h2>
                     {foodItems.map(item => (
-                        <ItemCard key={item.id}>
+                        <ItemCard key={item._id}>
                             <ItemImage src={item.image} alt={item.name} />
                             <h4>{item.name}</h4>
                             <p>${item.price.toFixed(2)}</p>
@@ -108,7 +122,7 @@ const Menu = () => {
                 <ItemContainer>
                     <h2>Drink Items</h2>
                     {drinkItems.map(item => (
-                        <ItemCard key={item.id}>
+                        <ItemCard key={item._id}>
                             <ItemImage src={item.image} alt={item.name} />
                             <h4>{item.name}</h4>
                             <p>${item.price.toFixed(2)}</p>
