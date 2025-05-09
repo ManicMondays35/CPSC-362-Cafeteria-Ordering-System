@@ -225,7 +225,7 @@ const Checkout = () => {
         </TotalBox>
 
         <AddressBox>
-          <h3>Shipping Information</h3>
+          <h3>Delivery Information</h3>
           <PaymentInput
             type="text"
             placeholder="Street Address"
