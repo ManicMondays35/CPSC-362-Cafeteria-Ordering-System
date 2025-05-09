@@ -289,3 +289,10 @@
 20250508	20:52:54	79c83675-2780-4365-9106-c4fdd5dea893	OPTIONS	http://localhost:5173	/menu
 20250508	20:52:54	ddcc605c-a0d8-4b29-b414-0a24851c0e41	GET	http://localhost:5173	/menu
 20250508	20:52:54	46d3c3c7-f2fe-49fc-a65e-c3f39045333f	GET	http://localhost:5173	/menu
+20250509	03:03:10	a6fe4789-dcf7-43d8-a97e-6a16301f9ab8	OPTIONS	http://localhost:5173	/auth
+20250509	03:03:10	bc2ba0ac-6b44-41e9-8540-088a6e0c3f39	POST	http://localhost:5173	/auth
+20250509	03:03:14	cc41c549-a7c5-498b-bfc2-397f89f0dde6	POST	http://localhost:5173	/auth
+20250509	03:03:16	4e55242b-02fe-4053-b0cc-23c66f48f4e4	OPTIONS	http://localhost:5173	/menu
+20250509	03:03:16	7e662597-8602-407a-b268-b1fa884b69f1	OPTIONS	http://localhost:5173	/menu
+20250509	03:03:16	39d566fe-f642-4928-8e8d-d6cfcd96e08c	GET	http://localhost:5173	/menu
+20250509	03:03:16	8dd9c0c8-6122-4e44-9f87-c35782d84f6c	GET	http://localhost:5173	/menu
