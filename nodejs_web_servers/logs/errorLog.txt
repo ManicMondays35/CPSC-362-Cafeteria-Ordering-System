@@ -24,3 +24,5 @@
 20250508	20:51:54	4e0afcdd-e239-4ef3-b675-61c2c3254005	Error: Not allowed by CORS
 20250508	20:52:11	81f29a4f-2da3-4245-b8cf-0c1e90a25c3b	Error: Not allowed by CORS
 20250508	20:52:12	75d8d797-4628-4346-a918-dfc5e33fef62	Error: Not allowed by CORS
+20250509	01:38:00	46755611-5fba-480a-a846-be54edc2440e	Error: ENOENT: no such file or directory, stat '/mnt/c/Users/Josue/Documents/Github/CPSC-362-Cafeteria-Ordering-System/nodejs_web_servers/views/404.html'
+20250509	02:03:51	fd464231-74a3-4621-bf64-d148028315fa	TypeError: Cannot read properties of undefined (reading 'email')

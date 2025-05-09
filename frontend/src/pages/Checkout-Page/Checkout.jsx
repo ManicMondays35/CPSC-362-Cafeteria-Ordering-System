@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from "../Checkout-Page/CartContext";
 
@@ -119,6 +120,7 @@ const Checkout = () => {
   const [cardNumber, setCardNumber] = React.useState('');
   const [expDate, setExpDate] = React.useState('');
   const [cvv, setCvv] = React.useState('');
+  const [userEmail, setUserEmail] = React.useState('');
   const [address, setAddress] = React.useState({
     street: '',
     city: '',
@@ -129,7 +131,16 @@ const Checkout = () => {
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleCheckout = () => {
+  const handleCheckout = async (e) => {
+    e.preventDefault();
+  
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Error with Token Exchange');
+      return;
+    }
+  
+    // Address validation
     if (!address.street.trim()) {
       alert('Please enter your street address');
       return;
@@ -170,6 +181,8 @@ const Checkout = () => {
       alert('Country name can only contain letters and spaces');
       return;
     }
+  
+    // Payment validation
     if (!cardNumber || !expDate || !cvv) {
       alert('Please fill in all payment details');
       return;
@@ -182,7 +195,7 @@ const Checkout = () => {
       alert('Please enter expiration date in MM/YY format');
       return;
     }
-    const month = parseInt(expDate.split('/')[0], 10); 
+    const month = parseInt(expDate.split('/')[0], 10);
     if (month < 1 || month > 12) {
       alert('Month must be between 01-12');
       return;
@@ -191,10 +204,38 @@ const Checkout = () => {
       alert('Please enter a valid CVV (3 or 4 digits)');
       return;
     }
-
-    alert('Order placed successfully!');
-    clearCart();
-    navigate('/home');
+  
+    try {
+      const orderNumber = `ORD-${Date.now()}`;
+      
+      // Prepare the order data
+      const orderData = {
+        orderNumber,
+        userEmail,
+        total: total,
+        delivered: 'pending' // You might want to track order status
+      };
+  
+      const response = await axios.post(
+        'http://localhost:4000/checkout',
+        orderData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+  
+      if (response.data.success) {
+        alert('Order Submitted Successfully!');
+        clearCart();
+        navigate('/home');
+      } else {
+        alert('Order submission failed: ' + response.data.message);
+      }
+    } catch(err) {
+      alert('Error submitting order: ' + (err.response?.data?.message || err.message));
+    }
   };
 
   return (
@@ -217,13 +258,25 @@ const Checkout = () => {
           ))
         )}
       </CartItemsBox>
-
+  
       <RightSide>
         <TotalBox>
           <h3>Total</h3>
           <p>${total.toFixed(2)}</p>
         </TotalBox>
-
+  
+        {/* New Email Box - Added above AddressBox */}
+        <AddressBox>
+          <h3>Contact Information</h3>
+          <PaymentInput
+            type="email"
+            placeholder="Email Address"
+            value={userEmail}
+            onChange={(e) => setUserEmail(e.target.value)}
+            required
+          />
+        </AddressBox>
+  
         <AddressBox>
           <h3>Delivery Information</h3>
           <PaymentInput
@@ -269,7 +322,7 @@ const Checkout = () => {
             </PaymentField>
           </PaymentRow>
         </AddressBox>
-
+  
         <PaymentBox>
           <h3>Payment Information</h3>
           <PaymentInput
@@ -309,7 +362,7 @@ const Checkout = () => {
             </PaymentField>
           </PaymentRow>
         </PaymentBox>
-
+  
         <ButtonBox>
           <CheckoutButton onClick={handleCheckout}>Confirm Order</CheckoutButton>
           <CheckoutButton onClick={() => navigate('/menu')}>Back to Menu</CheckoutButton>
@@ -317,6 +370,5 @@ const Checkout = () => {
       </RightSide>
     </CheckoutContainer>
   );
-};
-
+}
 export default Checkout;
